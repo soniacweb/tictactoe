@@ -22,8 +22,8 @@ const Board = () => {
   //   null, null, null,
   // ]
 
-  const initialSquares = Array(9).fill(null)
-  const [squares, setSquares] = useState(initialSquares)
+
+  const [squares, setSquares] = useState(Array(9).fill(null))
   const [xIsNext, setXIsNext] = useState(true)
 
   //immutable approach to mutating state 
@@ -32,11 +32,10 @@ const Board = () => {
   //make a copy of the squares state array
     const newSquares = [...squares]
     const winnerDeclared = Boolean(calculateWinner(newSquares))
-    const squareFilled = Boolean(newSquares[i])
-    if (winnerDeclared || squareFilled) {
-      return
-    }
-
+    // const squareFilled = Boolean(newSquares[i])
+    	// If user click an occupied square or if game is won, return
+    if (winnerDeclared || newSquares[i]) return
+    
     newSquares[i] = xIsNext ? 'X' : 'O'
   //mutate the copy setting i to x
     // newSquares[i] = 'X'
@@ -88,7 +87,7 @@ function calculateWinner(squares) {
   const lines = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8], //rows
     [0, 3, 6], [1, 4, 7], [2, 5, 8], //winning columns
-    [0, 4, 8], [2, 4, 6] //diagnols
+    [0, 4, 8], [2, 4, 6], //diagnals
   ]
   for (let line of lines) {
     const [a, b, c] = line
