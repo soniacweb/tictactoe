@@ -31,6 +31,12 @@ const Board = () => {
     // alert(`clicked square ${i}`)
   //make a copy of the squares state array
     const newSquares = [...squares]
+    const winnerDeclared = Boolean(calculateWinner(newSquares))
+    const squareFilled = Boolean(newSquares[i])
+    if (winnerDeclared || squareFilled) {
+      return
+    }
+
     newSquares[i] = xIsNext ? 'X' : 'O'
   //mutate the copy setting i to x
     // newSquares[i] = 'X'
@@ -47,7 +53,10 @@ const Board = () => {
     )
   }
 
-  const status = `New Player: ${xIsNext ? 'X' : 'O'}`
+  const winner = calculateWinner(squares)
+  const status = winner ?
+  `Winner is ${winner}` :
+  `New Player: ${xIsNext ? 'X' : 'O'}`
 
   return (
     <div>
@@ -66,9 +75,6 @@ const Board = () => {
   )
 }
 
-
-
-
 const Game = () => {
   return (
     <div className='game'>
@@ -76,6 +82,21 @@ const Game = () => {
       <Board />
     </div>
   )
+}
+
+function calculateWinner(squares) {
+  const lines = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], //rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], //winning columns
+    [0, 4, 8], [2, 4, 6] //diagnols
+  ]
+  for (let line of lines) {
+    const [a, b, c] = line
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a] // X or O
+    }
+  } 
+  return null
 }
 
 ReactDOM.render(
